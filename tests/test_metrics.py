@@ -136,3 +136,13 @@ class TestMetricsCollector:
 # 2026-03-24T19:28:19 update
 
 # 2026-04-10T18:10:10 update
+
+    def test_active_timers(self):
+        self.metrics.start_timer("op1")
+        assert self.metrics.snapshot()["active_timers"] == 1
+        self.metrics.start_timer("op2")
+        assert self.metrics.snapshot()["active_timers"] == 2
+        self.metrics.stop_timer("op1")
+        assert self.metrics.snapshot()["active_timers"] == 1
+        self.metrics.stop_timer("op2")
+        assert self.metrics.snapshot()["active_timers"] == 0
